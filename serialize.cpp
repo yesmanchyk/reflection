@@ -58,6 +58,8 @@ constexpr Person john{"John", 42};
 
 static_assert(serialize(john) == " name=John age=XXXX ");
 
+#include "structs.hpp"
+
 int main() {
   using namespace std;
   string s = "john:"; 
