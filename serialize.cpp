@@ -1,5 +1,7 @@
 #include <meta>
 #include <string>
+#include <iostream>
+
 
 // replicator:
 namespace __impl {
@@ -56,7 +58,10 @@ constexpr Person john{"John", 42};
 
 static_assert(serialize(john) == " name=John age=XXXX ");
 
-
 int main() {
+  using namespace std;
+  string s = "john:"; 
+  s += serialize(john);
+  cout << s << endl;
   return 0;
 }
