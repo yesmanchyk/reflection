@@ -1,5 +1,6 @@
 #include <meta>
 #include <string>
+#include <sstream>
 #include <iostream>
 
 
@@ -29,23 +30,19 @@ consteval auto expand(R range) {
 
 
 template<typename S>
-constexpr std::string serialize(S s) {
+std::string serialize(S s) {
   namespace r = std::meta;
   constexpr auto ctx = r::access_context::current();
   constexpr auto members = std::define_static_array(
       r::nonstatic_data_members_of(^^S, ctx)
     );
-  std::string result = " ";
+  std::stringstream ss;
   [:expand(members):] >> [&]<auto m>{
-    result += r::identifier_of(m);
-    result += "=";
-    if constexpr (type_of(m) == ^^int)
-      result += std::string(s.[:m:] / 10, 'X');
-    else
-      result += s.[:m:];
-    result += " ";
+    ss << r::identifier_of(m);
+    ss << ": " << s.[:m:];
+    ss << std::endl;
   };
-  return result;
+  return ss.str(); 
 }
 
 
@@ -56,14 +53,10 @@ struct Person {
 
 constexpr Person john{"John", 42};
 
-static_assert(serialize(john) == " name=John age=XXXX ");
-
 #include "structs.hpp"
 
 int main() {
   using namespace std;
-  string s = "john:"; 
-  s += serialize(john);
-  cout << s << endl;
+  cout << serialize(john);
   return 0;
 }
