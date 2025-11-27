@@ -33,6 +33,8 @@ std::string serialize(const T& o) {
   return ss.str(); 
 }
 
+#include "hanas.hpp"
+
 int main() {
   Person john{"John", 30};
   std::cout << serialize(john); 
