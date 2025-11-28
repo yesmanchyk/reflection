@@ -1,6 +1,8 @@
 nstructs = 4
 nfields  = 8
 
+last = 0
+serializes = {}
 for i=0,nstructs do
   struct_header = string.format("struct S%d {", i)
   lines = {struct_header}
@@ -23,5 +25,15 @@ for i=0,nstructs do
     "S%d s%d{%s};", i, i, table.concat(values, ",")
   )
   table.insert(lines, "")
-  vim.api.nvim_buf_set_lines(0, 3+i*#lines, 3+i*#lines, true, lines)
+  serializes[#serializes+1] = string.format(
+    "serialize(s%d);", i
+  )
+  last = 3+i*#lines
+  vim.api.nvim_buf_set_lines(0, last, last, true, lines)
+  last = last + #lines
 end
+
+lines = { string.format(
+  "void serializeAll() { %s }", table.concat(serializes, " ")
+) }
+vim.api.nvim_buf_set_lines(0, last, last, true, lines)
