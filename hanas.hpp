@@ -1,4 +1,4 @@
-#ifdef    HANAS_HPP
+#ifndef   HANAS_HPP
 #define   HANAS_HPP
 
 // run `:luafile hana.lua` in nvim on me
