@@ -1,5 +1,5 @@
-nstructs = 4
-nfields  = 8
+nstructs = 80
+nfields  = 40
 
 last = 0
 serializes = {}
